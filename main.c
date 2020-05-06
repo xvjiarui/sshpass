@@ -374,6 +374,7 @@ int runprogram(int argc, char *argv[]) {
 
 int match(const char *reference, const char *buffer, ssize_t bufsize, int state);
 void write_pass(int fd);
+void write_verification_code(int fd);
 
 int handleoutput(int fd) {
     // We are looking for the string
@@ -509,7 +510,7 @@ void write_verification_code(int fd) {
 
     if ((fp = popen(cmd, "r")) == NULL) {
         printf("Error opening pipe!\n");
-        return -1;
+        return;
     }
 
     while (fgets(buf, 40, fp) != NULL) {
@@ -520,7 +521,7 @@ void write_verification_code(int fd) {
 
     if (pclose(fp)) {
         printf("Command not found or exited with error status\n");
-        return -1;
+        return;
     }
 
     char subbuff[7];
